@@ -7,7 +7,7 @@
 const char* ssid = "your SSID name";
 const char* password = "SSID Password";
 int sensor = 13;  // Digital pin D7 for PIR sensor
-const char* host = "h4mid-hosseini.ir";
+const char* host = "your-http-server-domain";
 const char *api = "http://www.h4mid-hosseini.ir/friday/api/";
 const char *password = "yourpassword";
 
@@ -46,7 +46,6 @@ void setup() {
 
 void loop() {
 //  Serial.print("connecting to ");
-//  Serial.println(host);
   HTTPClient http;    //Declare object of class HTTPClient
   delay(100);
   // Use WiFiClient class to create TCP connections
