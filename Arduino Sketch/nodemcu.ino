@@ -1,16 +1,20 @@
-
+// install ESP library to comunicate with ESP based modules
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
+
+//install this library for reading json values
 #include <ArduinoJson.h>
 
-const char* ssid = "your SSID name";
-const char* password = "SSID Password";
-int sensor = 13;  // Digital pin D7 for PIR sensor
-const char* host = "your-http-server-domain";
-const char *api = "http://www.h4mid-hosseini.ir/friday/api/";
-const char *password = "yourpassword";
+const char* ssid = "your SSID name"; // replace your ssid name here
+const char* password = "SSID Password"; // replace your ssid password here
 
+int sensor = 13;  // Digital pin D7 of nodemcu for PIR sensor
+const char* host = "your-http-server-domain"; //just for displaying in serial monitor
+const char *api = "http://www.yourdomain.com/friday/api/"; //replace your domain in this part for getting relaies status
+const char *password = "yourpassword"; // this password is authenticates for creating objects
+
+// import DHT zip file from menu>sketch>include library>add zip file
 #include "DHT.h"
 
 #define DHTPIN 4     // what digital pin the DHT11 is conected to
@@ -22,14 +26,15 @@ void setup() {
   delay(10);
   pinMode(A0, INPUT); //declare ldr sensor port as input
   pinMode(sensor, INPUT);   // declare sensor as input
-  dht.begin();
+  
+  dht.begin(); //DTH connection is started
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
+  
   pinMode(14, OUTPUT);
   pinMode(12, OUTPUT);
-
-
+  
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -38,25 +43,30 @@ void setup() {
     yield();
   }
 
-//  Serial.println("");
-//  Serial.println("WiFi connected");  
-//  Serial.println("IP address: ");
-//  Serial.println(WiFi.localIP());
+  //prints if the connection is established
+  Serial.println("");
+  Serial.println("WiFi connected");  
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void loop() {
 //  Serial.print("connecting to ");
   HTTPClient http;    //Declare object of class HTTPClient
   delay(100);
+  
   // Use WiFiClient class to create TCP connections
   WiFiClientSecure client;
   delay(100);
+  
   const int httpPort = 443; // 80 is for HTTP / 443 is for HTTPS!
   client.setInsecure(); // this is the magical line that makes everything work
   delay(100);
+  
   WiFiClient wifi;
   http.begin(wifi, api);
   delay(100);
+  
   int httpCode = http.GET();            //Send the request
   String payload = http.getString();    //Get the response payload from server
   if(httpCode == 200)
@@ -70,6 +80,8 @@ void loop() {
    // Parse JSON object
     JsonObject& root = jsonBuffer.parseObject(payload);
     delay(50);
+    
+    // checks the defined API address and values, then lamp and relay status are changed
     if (!root.success()) {
       Serial.println(F("Parsing failed!"));
       delay(50);
@@ -99,6 +111,7 @@ void loop() {
      }
   }
 
+  
   if (!client.connect(host, httpPort)) { //works!
    Serial.println("connection failed");
     delay(50);
@@ -116,6 +129,8 @@ void loop() {
   delay(50);
   int ldr = analogRead(A0);
   delay(50);
+  
+  //sensors values should be concated together for sending to server
   String url = "/friday/home/";
   url += t;
   url += "/";
@@ -137,6 +152,7 @@ Serial.print("Requesting URL: ");
   client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" + 
                "Connection: close\r\n\r\n");
+  
  Serial.println();
   delay(50);
  Serial.println("closing connection");
