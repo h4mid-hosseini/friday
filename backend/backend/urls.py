@@ -18,5 +18,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #include friday app's urls in friday/ path
     path('friday/', include('friday.urls'), name='friday')
 ]

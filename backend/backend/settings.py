@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #import jalali_date to convert normal date to persian date
     'jalali_date',
+    #import friday app in installed apps
     'friday',
 ]
 
