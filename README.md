@@ -32,3 +32,33 @@ Friday is an IoT survilance system for detecting mothion, temprature, humidity a
 
 3. به بخش Tools>Boards> Boards Manager رفته و ESP8266 را جستجو کنید و آن را نصب کنید. 
 
+
+
+
+اتصالات سنسور ها و رله ها به این صورت می باشد:
+
+
+LRD:
+
+A0=> LDR => 10k ohm =>3.3V
+
+
+
+PIR:
+
+vin => 3.3v
+
+gnd => nodemcu gnd
+
+out => D7 nodemcu
+
+
+
+DHT11:
+
+gnd => nodemcu gnd
+
+vin => 3.3v
+
+out => D2 nodemcu
+
