@@ -1,0 +1,117 @@
+{% extends 'index.html' %}
+{% load jalali_tags %}
+
+
+{% block title %}
+سیستم فرایدی
+{% endblock %}
+
+
+{% block content %}
+<style>
+    td {
+        width: 200px;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<div id="posts">
+    <div class="container">
+        {% if request.user.is_superuser %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>
+                        #
+                    </td>
+                    <td>
+                        <div class="text" dir="rtl">دمای خانه (C)</div>
+                    </td>
+
+                    <td>
+                        <div class="text" dir="rtl"> رطوبت (٪)</div>
+                    </td>
+
+                    <td>
+                        <div class="text">وضعیت سنسور حرکت</div>
+                    </td>
+
+                    <td>
+                        <div class="text">میزان نور</a></div>
+                    </td>
+
+                    <td>
+                        <div class="text">تاریخ</a></div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for result in results %}
+                <tr>
+                    <td>
+                        {{forloop.counter}}
+                    </td>
+                    <td>{{result.tempratue}}</td>
+                    <td>{{result.humidity}}</td>
+                    {% if result.pir %}
+                    <td style="color: rgb(141, 3, 3);"><span class="iconify" data-icon="bx:run"></span></td>
+                    {% else %}
+                    <td style="color:rgb(12, 150, 74)"><span class="iconify" data-icon="bx:lock"></span></td>
+                    {% endif %}
+                    <td>{{result.ldr}}</td>
+                    <td>{{result.date | to_jalali}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="color:rgb(110, 17, 17); direction: rtl;">اجازه دسترسی به این بخش را ندارید.</p>
+        {% endif %}
+        
+        <div class="pagination">
+            <span class="step-links" dir="rtl">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; آخرین</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+                {% endif %}
+        
+                <span class="current">
+                    صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}.
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">بعدی</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">آخرین &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        
+    </div>
+
+    <script src="/static/js/jquery-2.2.4.min.js"></script>
+    <script src="/static/js/jquery.waypoints.min.js"></script>
+    <script src="/static/js/infinite.min.js"></script>
+    <script>
+    var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        handler: function(direction) {
+
+    },
+    offset: 'bottom-in-view',
+
+    onBeforePageLoad: function () {
+    $('.spinner-border').show();
+    },
+    onAfterPageLoad: function () {
+    $('.spinner-border').hide();
+    }
+
+    });
+
+    </script>
+
+    {% endblock %}

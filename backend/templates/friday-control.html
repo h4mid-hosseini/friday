@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+{% block title %}
+بخش کنترل فرایدی
+{% endblock %}
+
+
+{% block content %}
+<div class="container text-center col" style="direction: rtl; margin-top: 2%;">
+    {% if request.user.is_superuser %}
+    <div class="row">
+        {% if lamp_status %}
+        <h2 class="col col-sm-3">لامپ: <span class="iconify" data-icon="bx:power-off" style="color: rgb(39, 192, 98); margin: 35px;"></span></h2>
+        {% else %}
+        <h2 class="col col-sm-3">لامپ: <span class="iconify" data-icon="bx:power-off" style="color: rgb(192, 39, 39); margin: 35px;"></span></h2>
+        {% endif %}
+        <a class="btn btn-success col-sm-2" href="{% url 'friday:lamp_on' %}" style="border-radius: 15px; margin: 35px;">لامپ
+            روشن</a>
+        <a class="btn btn-danger col-sm-2" href="{% url 'friday:lamp_off' %}" style="border-radius: 15px; margin: 35px;">لامپ
+            خاموش</a>
+    </div>
+
+    <div class="row">
+        {% if relay_status %}
+        <h2 class="col col-sm-3">رله: <span class="iconify" data-icon="bx:power-off" style="color: rgb(39, 192, 98); margin: 35px;"></span></h2>
+        {% else %}
+        <h2 class="col col-sm-3">رله: <span class="iconify" data-icon="bx:power-off" style="color: rgb(192, 39, 39); margin: 35px;"></span></h2>
+        {% endif %}
+        <a class="btn btn-success col-sm-2" href="{% url 'friday:relay_on' %}" style="border-radius: 15px; margin: 35px; ">رله
+            روشن</a>
+        <a class="btn btn-danger col-sm-2" href="{% url 'friday:relay_off' %}" style="border-radius: 15px; margin: 35px">رله خاموش</a>
+    </div>
+    {% else %}
+        <h3 style=" color:rgb(139, 9, 9)">اجازه دسترسی به این بخش را ندارید!</h3>
+            {% endif %}
+    </div>
+
+    {% endblock %}
