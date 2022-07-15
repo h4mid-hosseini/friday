@@ -5,6 +5,10 @@ Friday is an IoT survilance system for detecting mothion, temprature, humidity a
 
 بکند سرور رو با جنگو نوشتم و nodemuc رو با Arduino IDE  کد نویسی کردم.
 
+برای نصب پیش نیازهای راه اندازی سرور فایل requirements.txt رو با دستور pip نصب کنید.
+
+
+
 وسائل مورد نیاز این پروژه:
 
 ۱. ماژول nodemcu
